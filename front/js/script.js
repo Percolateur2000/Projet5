@@ -1,9 +1,9 @@
 // recuperation de l'api et stockage dans sessionStorage, puis insertion du HTML dans le DOM
 
+let i = 0;
+
 // local fetch
 //fetch("http://localhost:3000/api/products")
-
-let i = 0;
 
 // debut de la fonction une fois aue le DOM est chargé
 const start = () => {
@@ -14,7 +14,7 @@ const start = () => {
       for (let element of kanapData) {
         document.getElementById('items')
           .insertAdjacentHTML('beforeend',
-          `<a href="./product.html?${kanapData[i]._id}"><article><img src="${kanapData[i].imageUrl}" alt="${kanapData[i].altTxt}"><h3 class="productName">${kanapData[i].name}</h3><p class="productDescription">${kanapData[i].description}</p></article></a>`);
+          `<a href="./product.html?id=${kanapData[i]._id}"><article><img src="${kanapData[i].imageUrl}" alt="${kanapData[i].altTxt}"><h3 class="productName">${kanapData[i].name}</h3><p class="productDescription">${kanapData[i].description}</p></article></a>`);
         i++
   }})}
 
