@@ -93,11 +93,8 @@ function addProduct() {
     let cart = getCart()
     cart.push(kanapData)
     localStorage.setItem('Panier', JSON.stringify(cart))
-    if (document.getElementById('quantity').value > 1) {
-        alert(`${document.getElementById('quantity').value} ${name} ${colors.value} ont été ajoutés au panier`)}
-    else {
-        alert(`${document.getElementById('quantity').value} ${name} ${colors.value} a été ajouté au panier`)}
-    }
+    validationAjout()
+}
 
 
 //verif si id + color existants, edition de la qté
@@ -115,5 +112,30 @@ function isItemInCart() {
             localStorage.setItem('Panier', JSON.stringify(cart))
             return alert(`La quantité a bien été modifiée`)}
         }
+    checkID()
+}
+
+// verifie si l'ID est presente dans le panier et groupe les kanap avec la meme ID
+function checkID () {
+    let cart = getCart()
+    for (let x = 0; x < cart.length; x++) {
+        if (cart[x].ProductID === id) {
+        let kanapUpdate = {
+            ProductID : id,
+            color : colors.value,
+            qty : parseInt(document.getElementById('quantity').value)
+        }
+            cart.splice(x, 0, kanapUpdate)
+            localStorage.setItem('Panier', JSON.stringify(cart))
+            validationAjout()
+            return}}
     addProduct()
+}
+
+// petit message qui indique que les produits ont été ajoutés au panier
+function validationAjout () {
+    if (document.getElementById('quantity').value > 1) {
+        alert(`${document.getElementById('quantity').value} ${name} ${colors.value} ont été ajoutés au panier`)}
+    else {
+        alert(`${document.getElementById('quantity').value} ${name} ${colors.value} a été ajouté au panier`)}
 }
