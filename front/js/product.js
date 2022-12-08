@@ -1,6 +1,7 @@
 const kanapData = JSON.parse(sessionStorage.getItem("productData"));
 let colors = document.getElementById('colors');
 
+
 //associer la page aux données de l'api
 let i = 0;
 let url = new URL(window.location.href);
@@ -13,20 +14,20 @@ while (id != (kanapData[i]._id) ) {
 
 let imgUrl = kanapData[i].imageUrl
 let imgTxt = kanapData[i].altTxt
-let name = kanapData[i].name
+let kanapName = kanapData[i].name
 let price = kanapData[i].price
 let desc = kanapData[i].description
 let quantite = parseInt(document.getElementById('quantity').value)
 
 //remplacement du titre de la page
 let title = document.querySelector('title')
-title.innerText = name
+title.innerText = kanapName
 
 // ajout des elements html
 document.querySelector('.item__img')
     .insertAdjacentHTML('afterbegin', `<img src="${imgUrl}" alt="${imgTxt}"></img>`);
 document.getElementById('title')
-    .insertAdjacentHTML('afterbegin', `${name}`);
+    .insertAdjacentHTML('afterbegin', `${kanapName}`);
 document.getElementById('price')
     .insertAdjacentHTML('afterbegin', `${price}`);
 document.getElementById('description')
@@ -135,7 +136,7 @@ function checkID () {
 // petit message qui indique que les produits ont été ajoutés au panier
 function validationAjout () {
     if (document.getElementById('quantity').value > 1) {
-        alert(`${document.getElementById('quantity').value} ${name} ${colors.value} ont été ajoutés au panier`)}
+        alert(`${document.getElementById('quantity').value} ${kanapName} ${colors.value} ont été ajoutés au panier`)}
     else {
-        alert(`${document.getElementById('quantity').value} ${name} ${colors.value} a été ajouté au panier`)}
+        alert(`${document.getElementById('quantity').value} ${kanapName} ${colors.value} a été ajouté au panier`)}
 }
