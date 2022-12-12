@@ -2,12 +2,9 @@
 
 let i = 0;
 
-// local fetch
-//fetch("http://localhost:3000/api/products")
-
-// debut de la fonction une fois aue le DOM est chargé
+// debut de la fonction une fois que le DOM est chargé
 const start = () => {
-  fetch("https://kanapi.gtnsimon.dev/api/products")
+  fetch("http://localhost:3000/api/products")
     .then((res) => res.json())
     .then((data) => { sessionStorage.setItem("productData", JSON.stringify(data));
       const kanapData = JSON.parse(sessionStorage.getItem("productData"));

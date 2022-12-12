@@ -29,7 +29,7 @@ for (let x = 0; x < cart.length; x++) {
         </div>
         <div class="cart__item__content">
             <div class="cart__item__content__description">
-            <h2>${kanapData[y].description}</h2>
+            <h2>${kanapData[y].name}</h2>
             <p>Couleur : ${cart[x].color}</p>
             <p>Prix unitaire : ${kanapData[y].price} €</p>
             </div>
@@ -100,6 +100,7 @@ let totalPrix = () => {
     return total
 }
 
+//affichage des quantités et prix actualiés à chaque changement
 let newQty = document.querySelectorAll(".itemQuantity");
 for (let i = 0; i < newQty.length; i++) {
     newQty[i].addEventListener("change", () => {
@@ -111,4 +112,82 @@ for (let i = 0; i < newQty.length; i++) {
 
 qtyTotal.innerText = articleTotal()
 prixTotal.innerText = totalPrix()
+let firstName = document.getElementById('firstName')
+let lastName = document.getElementById('lastName')
+let address = document.getElementById('address')
+let city = document.getElementById('city')
+let email = document.getElementById('email')
+
+
+// verification des infos client
+document.getElementById('order').addEventListener( 'click', regCheck)
+
+// regEx verification
+function regCheck (click) {
+    if ((/[0123456789_+-.,!@#$%^&*();/|<>"' ]/g).test(firstName.value) === true) {
+        click.preventDefault();
+        msgError('firstNameErrorMsg');
+    return}
+    else msgOk('firstNameErrorMsg');
+    if ((/[0123456789_+-.,!@#$%^&*();/|<>"]/g).test(lastName.value) === true){
+        click.preventDefault();
+        msgError('lastNameErrorMsg');
+    return}
+    else msgOk('lastNameErrorMsg');
+    if ((/[\d]/g).test(address.value) === false) {
+        click.preventDefault()
+        msgError('addressErrorMsg');
+    return}
+    else msgOk('addressErrorMsg');
+    if ((/[0123456789_+-.,!@#$%^&*();/|<>"']/g).test(city.value) === true){
+        click.preventDefault()
+        msgError('cityErrorMsg');
+    return}
+    else msgOk('cityErrorMsg');
+    let isComplete = confirm("Voulez vous valider votre panier ?");
+    if (isComplete === true) {
+        panierFinal()
+    } else
+        click.preventDefault();
+}
+
+// message d'erreur en fonction de l'emplacement de la saisie
+function msgError (location) {
+    document.getElementById(location).innerText = "Veuillez verifier votre saisie"
+}
+
+// message ok en fonction de l'emplacement de la saisie
+function msgOk (location) {
+    document.getElementById(location).innerText = ""
+}
+
+//creation du fichier a envoyer au back
+function panierFinal () {
+    let kanapLs = getCart()
+    let newKanapLs = kanapLs.map((id) => {
+        return id.ProductID
+    }
+    )
+    let user = {
+        contact: {
+            firstName: firstName.value,
+            lastName: lastName.value,
+            address: address.value,
+            city: city.value,
+            email: email.value
+        },
+        products: newKanapLs
+    }
+    fetch("http://localhost:3000/api/products/order", {
+        method: 'POST',
+        body: JSON.stringify(user),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+.then((response) => {return response.json()})
+.then((data) => {
+    location.href=`confirmation.html?id=${data.orderId}`
+}).catch( () => {alert(`Une erreur est survenue`)})
+}
 
