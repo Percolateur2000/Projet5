@@ -53,6 +53,11 @@ for (let x = 0; x < cart.length; x++) {
 let checkChange = document.querySelectorAll(".itemQuantity");
 checkChange.forEach(elem => {
     elem.addEventListener("input", () => {
+        if (parseInt(elem.closest('input').value) < 0 || parseInt(elem.closest('input').value) > 100 ) {
+            alert('Merci de verifier la quantité')
+            return
+        }
+        else {
         let cart = getCart()
         tempCart = {
             ProductID: elem.closest('article').dataset.id,
@@ -65,7 +70,7 @@ checkChange.forEach(elem => {
                 localStorage.setItem('Panier', JSON.stringify(cart));
             }
         }
-    })
+    }})
 })
 
 // suppression d'un element + refresh de la page
@@ -129,25 +134,25 @@ bouton.addEventListener('click', regCheck)
 
 // regEx verification
 function regCheck(click) {
-    if ((/^(?=.{2,20}$)[a-zA-Z]+(?:[-'\s][a-zA-Z]+)*$/).test(firstName.value) === false) {
+    if ((/\d/).test(firstName.value) === true || firstName.value === "") {
         click.preventDefault()
         msgError('firstNameErrorMsg');
         return
     }
     else msgOk('firstNameErrorMsg');
-    if ((/^(?=.{2,20}$)[a-zA-Z]+(?:[-'\s][a-zA-Z]+)*$/g).test(lastName.value) === false) {
+    if ((/\d/).test(lastName.value) === true || lastName.value === "") {
         click.preventDefault()
         msgError('lastNameErrorMsg');
         return
     }
     else msgOk('lastNameErrorMsg');
-    if ((/^(?=.{2,40}$)(?:\w+[_+-.,!@#$%^&*();/|<>"]\w+)*$/).test(address.value) === true) {
+    if ((/^(?=.{2,40}$)(?:\w+[_+-.,!@#$%^&*();/|<>"]\w+)*$/).test(address.value) === true || address.value === "") {
         click.preventDefault()
         msgError('addressErrorMsg');
         return
     }
     else msgOk('addressErrorMsg');
-    if ((/^(?=.{2,20}$)[a-zA-Z]+(?:[-'\s][a-zA-Z]+)*$/).test(city.value) === false) {
+    if ((/^(?=.{2,20}$)[a-zA-Z]+(?:[-'\s][a-zA-Z]+)*$/).test(city.value) === false || city.value === "") {
         click.preventDefault()
         msgError('cityErrorMsg');
         return
@@ -162,7 +167,11 @@ function regCheck(click) {
         click.preventDefault()
         msgOk('emailErrorMsg')
     };
-    let isComplete = confirm("Voulez vous valider votre panier ?");
+    if (articleTotal() <= 0) {
+        alert('Votre panier est vide')
+        return
+    }
+    let isComplete = confirm("Etes vous sûr(e) de vouloir valider votre panier avec ces informations ?");
     if (isComplete === true) {
         click.preventDefault();
         panierFinal();

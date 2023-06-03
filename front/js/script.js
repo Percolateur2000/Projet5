@@ -2,7 +2,7 @@ let i = 0;
 
 // debut de la fonction une fois que le DOM est chargé
 let start = () => {
-  fetch("http://localhost:3000/api/products")
+  fetch("https://kanapi.gtnsimon.dev/api/products")
     .then((res) => res.json())
     .then((data) => {
       sessionStorage.setItem("productData", JSON.stringify(data));
